@@ -199,3 +199,17 @@ div.field, div.actions {
 }
 
 
+
+/* index list of users */
+
+ul.users  [
+  margin-top: 1em;
+]
+
+.users li {
+  list-style: none;
+}
+
+
+
+
