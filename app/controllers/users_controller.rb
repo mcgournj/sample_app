@@ -11,6 +11,7 @@ before_filter :admin_user,   :only => [:destroy]
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(:page => params[:page])
     @title = @user.name
   end  
 
@@ -23,8 +24,7 @@ before_filter :admin_user,   :only => [:destroy]
     @user = User.new(params[:user])
     if @user.save
       sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      redirect_to @user, :flash => { :success => "Welcome to the Sample App!" }
     else
       @title = "Sign up"
       render 'new'
@@ -37,8 +37,7 @@ before_filter :admin_user,   :only => [:destroy]
 
   def update
     if @user.update_attributes(params[:user])
-       flash[:success] = "Profile updated."
-       redirect_to @user
+       redirect_to @user, :flash => { :success => "Profile updated." }
     else
      @title = "Edit user"
      render 'edit'
@@ -47,16 +46,12 @@ before_filter :admin_user,   :only => [:destroy]
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
-    redirect_to users_path
+    redirect_to users_path, :flash => { :success => "User destroyed." }
   end
 
   private
 
-    def authenticate
-      deny_access unless signed_in?
-    end
-
+   
 
     def correct_user
       @user = User.find(params[:id])
